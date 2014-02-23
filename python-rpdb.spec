@@ -2,9 +2,8 @@
 # Conditional build:
 %bcond_without	python2		# Python 2.x module
 %bcond_without	python3		# Python 3.x module
-#
+
 %define	module	rpdb
-#
 Summary:	pdb wrapper with remote access via tcp socket
 Name:		python-rpdb
 Version:	0.1.3
@@ -14,17 +13,18 @@ Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/rpdb/rpdb-%{version}.tar.gz
 # Source0-md5:	4f350f523446a9100395d41b0b05c6cb
 URL:		https://pypi.python.org/pypi/rpdb/
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.219
 %if %{with python2}
 BuildRequires:	python-devel
 BuildRequires:	python-modules
-Requires:	python
 %endif
 %if %{with python3}
 BuildRequires:	python3-2to3
 BuildRequires:	python3-devel
 BuildRequires:	python3-modules
 %endif
-BuildRequires:	rpm-pythonprov
+Requires:	python
 Requires:	python-devel-src
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -33,10 +33,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 A wrapper around pdb that will re-route stdin and stdout to a socket
 handler.
 
-%package -n	python3-%{module}
+%package -n python3-%{module}
 Summary:	pdb wrapper with remote access via tcp socket
-Version:	0.1.3
-Release:	1
 Group:		Libraries/Python
 Requires:	python3
 Requires:	python3-devel-tools
@@ -50,24 +48,27 @@ handler.
 
 %build
 %if %{with python2}
-%{__python} ./setup.py build --build-base py2
+%{__python} setup.py build --build-base py2
 %endif
 %if %{with python3}
-%{__python3} ./setup.py build --build-base py3
+%{__python3} setup.py build --build-base py3
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
-%{__python} ./setup.py build \
+%{__python} setup.py build \
 	--build-base py2 \
 	install \
 	--optimize 2 \
 	--root=$RPM_BUILD_ROOT
+
+%py_postclean
 %endif
+
 %if %{with python3}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-%{__python3} ./setup.py build \
+%{__python3} setup.py build \
 	--build-base py3 \
 	install \
 	--optimize 2 \
@@ -81,14 +82,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc PKG-INFO
-%{py_sitescriptdir}/%{module}
-%{py_sitescriptdir}/*egg-info
+%{py_sitescriptdir}/rpdb
+%{py_sitescriptdir}/rpdb-%{version}-py*.egg-info
 %endif
 
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
 %doc PKG-INFO
-%{py3_sitescriptdir}/%{module}
-%{py3_sitescriptdir}/*egg-info
+%{py3_sitescriptdir}/rpdb
+%{py3_sitescriptdir}/rpdb-%{version}-py*.egg-info
 %endif
