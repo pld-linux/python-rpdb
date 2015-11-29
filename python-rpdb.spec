@@ -14,7 +14,7 @@ Source0:	https://pypi.python.org/packages/source/r/rpdb/rpdb-%{version}.tar.gz
 # Source0-md5:	4f350f523446a9100395d41b0b05c6cb
 URL:		https://pypi.python.org/pypi/rpdb/
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
 BuildRequires:	python-devel
 BuildRequires:	python-modules
