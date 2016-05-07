@@ -7,7 +7,7 @@
 Summary:	pdb wrapper with remote access via tcp socket
 Name:		python-rpdb
 Version:	0.1.3
-Release:	4
+Release:	5
 License:	?
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/rpdb/rpdb-%{version}.tar.gz
@@ -48,31 +48,23 @@ handler.
 
 %build
 %if %{with python2}
-%py_build --build-base py2
+%py_build
 %endif
 %if %{with python3}
-%py3_build --build-base py3
+%py3_build
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
-%py_build \
-	--build-base py2 \
-	install \
-	--optimize 2 \
-	--root=$RPM_BUILD_ROOT
+%py_install
 
 %py_postclean
 %endif
 
 %if %{with python3}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-%py3_build \
-	--build-base py3 \
-	install \
-	--optimize 2 \
-	--root=$RPM_BUILD_ROOT
+%py3_install
 %endif
 
 %clean
