@@ -7,7 +7,7 @@
 Summary:	pdb wrapper with remote access via tcp socket
 Name:		python-rpdb
 Version:	0.1.3
-Release:	7
+Release:	8
 License:	?
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/rpdb/rpdb-%{version}.tar.gz
